@@ -1,0 +1,28 @@
+* {
+	margin: 0;
+	padding: 0;
+	li {
+		list-style: none;
+	}
+}
+
+.container {
+	width: 600px;
+	height: 320px;
+	display: flex;
+	overflow: hidden;
+	position: relative;
+}
+.carouselWrapper {
+	width: 100%;
+	display: flex;
+}
+
+.btn {
+	position: absolute;
+	z-index: 1;
+	top: 45%;
+}
+.next {
+	right: 0;
+}
