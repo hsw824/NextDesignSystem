@@ -1,0 +1,28 @@
+{
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "outDir": "./dist",
+
+    /* Language and Environment */
+    "target": "ES5",
+    "lib": ["esnext", "dom", "dom.iterable"],
+
+    /* Modules */
+    "module": "CommonJS",
+
+    /* Emit */
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "./dist",
+    "noEmitOnError": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true
+  }
+}
