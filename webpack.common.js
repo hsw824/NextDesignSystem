@@ -1,17 +1,33 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { merge } = require("webpack-merge");
 
-module.exports = {
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+const commonConfig = {
   entry: "./src/index.tsx",
   output: {
-    filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "index.html",
     }),
-  ],
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        diagnosticOptions: {
+          semantic: true,
+          syntactic: true,
+        },
+      },
+    }),
+    new ReactRefreshWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "[name].[contenthash].css",
+    }),
+  ].filter(Boolean),
   module: {
     rules: [
       {
@@ -40,7 +56,33 @@ module.exports = {
       },
     ],
   },
+  mode: "production",
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", "..."],
   },
 };
+
+const esmConfig = merge(commonConfig, {
+  output: {
+    filename: "[name].mjs",
+    library: {
+      type: "module",
+    },
+  },
+  experiments: {
+    outputModule: true, // ESM 출력을 위해 필요합니다.
+  },
+  target: "web", // 대상 환경을 설정합니다.
+});
+
+const cjsConfig = merge(commonConfig, {
+  output: {
+    filename: "[name].cjs",
+    library: {
+      type: "commonjs2",
+    },
+  },
+  target: "node", // Node.js 환경을 대상으로 합니다.
+});
+
+module.exports = [esmConfig, cjsConfig];
